@@ -1,0 +1,39 @@
+#This file contain list of instructions
+
+#Specifying the version of Docker Compose to use
+version: "3.9"
+#Specifying which services(or containers) we want to have running within our Docker host
+#We just have one for web running currently but we can have multiple services
+services:
+    #Container 1: Service running our django local server
+    web:
+        #We set build to look into current directory for our Dockerfile
+        build: .
+        # execute the command to run the local web server
+        command: python manage.py runserver 0.0.0.0:8000
+        #Sync the Docker filesystem with our local filesystem, so that any changes made on
+        #docker will be automatically sync with our local filesystem
+        volumes:
+            - .:/code
+        #We use default port 8000
+        ports:
+            - 8000:8000
+        #Shows our web service depends on the db service
+        depends_on:
+            - db
+    #Container 2: Service running our database (PostgreSQL)
+    db:
+        #Specifying the version of Postgres to use
+        image: postgres:13
+        #This volume mount enable us to be able to save the postgresql data even when the 
+        #container is stops bcoz by default docker is ephemeral i.e wen d container stop running
+        #All its information is lost. we bind the datas to the directory shown below
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        #Add a Trust authentication to our environment for the db
+        environment:
+            - "POSTGRES_HOST_AUTH_METHOD=trust"
+#Declaration of the volume been used
+volumes:
+    postgres_data:
+
