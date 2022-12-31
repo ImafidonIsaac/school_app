@@ -1,0 +1,50 @@
+{% extends "account/login.html" %}
+
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+
+{% block form %}
+    
+
+<form id="signup_form" method="post" action="{% url 'account_signup' %}" class="login-form">
+                                    
+                                    
+                                    <div class="form-group">
+                                        {{form|crispy}}
+                                    </div>
+                 
+
+                                      {% if redirect_field_value %}
+                          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                                      {% endif %}
+                                      {% csrf_token %}
+
+<div class="d-grid">
+<button class="btn btn-primary btn-start" type="submit">Register</button>
+</div>
+
+                                </form>
+
+</div>
+</div>
+
+{% endblock form %}
+
+<div class="google-bg text-center">
+<span><a href="#">Or sign in with</a></span>
+<div class="sign-google">
+<ul>
+<li><a href="#"><img src="{% static 'assets/img/net-icon-01.png' %}" class="img-fluid" alt="Logo"> Sign In using Google</a></li>
+<li><a href="#"><img src="{% static 'assets/img/net-icon-02.png' %}" class="img-fluid" alt="Logo">Sign In using Facebook</a></li>
+</ul>
+</div>
+<p class="mb-0">Already a User ? <a href="{% url 'account_login' %}">Login to your Account</a></p>
+</div>
+</div>
+
+</div>
+</div>
+</div>

@@ -1,0 +1,114 @@
+{% extends "parents/parent_base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% load thumbnail %}
+
+
+
+
+
+{% block content %}
+<div class="col-xl-9 col-lg-8 col-md-12">
+<div class="row">
+
+
+
+
+<div class="row">
+<div class="col-md-12">
+<div class="settings-widget">
+<div class="settings-inner-blk p-0">
+<div class="sell-course-head comman-space">
+<h3>Your kids </h3>
+</div>
+<div class="comman-space pb-0">
+<div class="settings-tickets-blk course-instruct-blk table-responsive">
+
+<table class="table table-nowrap mb-0">
+<thead>
+<tr>
+<th>STUDENT</th>
+<th>RESULTS</th>
+<th>DUE FEE</th>
+</tr>
+</thead>
+<tbody>
+
+
+
+
+{% for student_profile in students_profile %}
+	
+
+<tr>
+<td>
+<div class="sell-table-group d-flex align-items-center">
+<div class="sell-group-img">
+<a href="####">
+
+
+
+{% if student_profile.passport %}
+<img src="{{student_profile.passport|thumbnail_url:'student_image' }}" class="img-fluid">
+{% else %}
+    <img src="{% static 'no_profile_image.png' %}" class="img-fluid " alt="">
+{% endif %}
+
+
+
+</a>
+</div>
+<div class="sell-tabel-info"></p>
+<p><a href="####">{{student_profile.fullname_of_pupil}} </a>
+</div>
+</div>
+</td>
+<td>34</td>
+<td>$3,145.23</td>
+</tr>
+
+{% empty %}
+
+<tr>
+<td>
+<div class="sell-table-group d-flex align-items-center">
+<div class="sell-group-img">
+
+
+</div>
+<div class="sell-tabel-info"></p>
+<p>You have no kid enrolled currently
+</div>
+</div>
+</td>
+<td></td>
+<td></td>
+</tr>
+
+
+{% endfor %}
+
+
+
+
+
+
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+{% endblock content %}
+

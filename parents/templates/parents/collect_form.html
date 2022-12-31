@@ -1,0 +1,75 @@
+{% extends "parents/parent_base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load thumbnail %}
+
+
+
+{% block content %}
+
+
+
+<div class="col-xl-9 col-lg-8 col-md-12">
+<div class="row">
+<div class="col-md-12">
+<div class="settings-widget">
+<div class="settings-inner-blk p-0">
+<div class="sell-course-head comman-space">
+<h3>Admission Form</h3>
+<p>You have full control to manage your own account setting.</p>
+</div>
+<div class="comman-space pb-0">
+<div class="instruct-search-blk mb-0">
+<div class="show-filter all-select-blk">
+<form method="POST">
+<div class="row gx-2 align-items-center">
+
+{{entrance_form|crispy}}
+{% csrf_token %}
+
+</div>
+
+</div>
+</div>
+</div>
+<div class="comman-space bdr-bottom-line">
+<div class="instruct-review-blk ">
+<div class="review-item">
+
+<p class="rev-info">“ Don't bother about the class you will have to fill that in the form  “</p>
+<button type="submit" class="btn btn-reply">Proceed To Payment Page</button>
+</form>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}

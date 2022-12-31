@@ -1,3 +1,4 @@
+import uuid
 from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
@@ -19,6 +20,7 @@ class Student(models.Model):
 	("Suspended", "Suspended"),("Expelled", "Expelled"),]
 	GENDER_CHOICES = [("Male", "Male"), ("Female", "Female")]
 	##########################################################
+	id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
 	student_first_name = models.CharField(max_length=100)
 	student_last_name = models.CharField(max_length=100)
 	student_middle_name = models.CharField(max_length=100, blank=True)
@@ -51,9 +53,18 @@ class Student(models.Model):
 	def __str__(self):
 		return f"{self.student_first_name} {self.student_last_name}"
 
-    # def get_absolute_url(self):
-    #     return reverse("student-detail", kwargs={"pk": self.pk})
+	def get_absolute_url(self):
+		return reverse("students:student_detail", args=[str(self.id)])
 
+
+    #I use this to change the color in the all kids page
+	def badge_color(self):
+		if self.current_status == "Active":
+			return "low"
+		elif self.current_status == "Suspended":
+			return "medium"
+		else:
+			return "high"
 
 
 

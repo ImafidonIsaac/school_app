@@ -1,0 +1,16 @@
+{% load cart_template_tags %}
+
+<h1>Parent Header </h1>
+
+<p>{{user.username}} | |  My Profile | | Task | |  Message | |  Logout | |  Account Settings  | | 
+|  | | Notification (0)
+| | Messages (0) </p>
+
+
+				{% if request.user|cart_item_count != 0 %}
+                  <span class="badge red z-depth-1 mr-1"> Cart {{ request.user|cart_item_count }} </span>
+
+                  {% else %}
+                      Cart 0
+                {% endif %}
+                

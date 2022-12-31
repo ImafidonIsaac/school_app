@@ -21,6 +21,16 @@ services:
         #Shows our web service depends on the db service
         depends_on:
             - db
+        # Storing all our environment variable, like secret key, debug, database, etc
+        environment:
+            - "DJANGO_SECRET_KEY=django-insecure-7n@xxr3c0&_ou+fd$@b4&x4m_q8xl&$v=d2kjule9sffkjl%=&"
+            - "DJANGO_DEBUG=True"
+            - "DJANGO_SECURE_SSL_REDIRECT=False"
+            - "DJANGO_SECURE_HSTS_SECONDS = 0"
+            - "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=False"
+            - "DJANGO_SECURE_HSTS_PRELOAD=False"
+            - "DJANGO_SESSION_COOKIE_SECURE=False"
+            - "DJANGO_CSRF_COOKIE_SECURE=False"
     #Container 2: Service running our database (PostgreSQL)
     db:
         #Specifying the version of Postgres to use

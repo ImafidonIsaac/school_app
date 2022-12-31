@@ -1,0 +1,11 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+<h1>PARENT / GUARDIAN FORM</h1>
+<form method="POST">
+	{{form|crispy}}
+	<button type="submit">Proceed</button>
+	{% csrf_token %}
+</form>
+

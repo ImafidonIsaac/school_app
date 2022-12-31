@@ -1,0 +1,41 @@
+{% load static %}
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="keywords" content="{{ meta_keywords }}">
+    <meta name="author" content="{{ author }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% if page_title %}{{ page_title }}-{% endif %}{{ site_name }}-{{tagline}}{% endblock %}</title>
+<style>
+    .asteriskField {
+    display: none;
+}
+</style>
+
+<link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/logoo.png' %}">
+
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/owl.theme.default.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'assets/plugins/slick/slick.css' %}">
+<link rel="stylesheet" href="{% static 'assets/plugins/slick/slick-theme.css' %}">
+
+<link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'assets/plugins/aos/aos.css' %}">
+
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'assets/css/feather.css' %}"> -->
+</head>
+
+
+
+
+
+

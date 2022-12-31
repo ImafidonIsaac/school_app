@@ -11,28 +11,27 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from environs import Env
 
-import environ
-env = environ.Env()
-# reading .env file
-environ.Env.read_env()
+env = Env()
+env.read_env()
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+ 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-7n@xxr3c0&_ou+fd$@b4&x4m_q8xl&$v=d2kjule9sffkjl%=&'
-SECRET_KEY = env("SECRET_KEY", default="unsafe-secret-key")
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = env("DEBUG",default=False)
+DEBUG = env.bool("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".herokuapp.com","localhost","127.0.0.1"]
 
 
 
@@ -66,7 +65,9 @@ THIRD_PARTY_APPS=[
     'allauth.account',
     'allauth.socialaccount',
     'crispy_forms',
+    # 'crispy_bootstrap5',
     'easy_thumbnails',
+    'debug_toolbar',
     # ... include the providers you want to enable:
     # 'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.google',
@@ -79,8 +80,12 @@ THIRD_PARTY_APPS=[
 
 INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS + THIRD_PARTY_APPS
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',#Cache
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -88,7 +93,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ##########################################################
+    'debug_toolbar.middleware.DebugToolbarMiddleware',# Tool bar
+    'django.middleware.cache.FetchFromCacheMiddleware',#Cache
 ]
+
+######CACHE 
+CACHE_MIDDLEWARE_ALIAS = "default"
+CACHE_MIDDLEWARE_SECONDS = 604800
+CACHE_MIDDLEWARE_KEY_PREFIX = " "
 
 ROOT_URLCONF = 'website.urls'
 
@@ -103,6 +116,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'pages.context_processors.all_pages',
             ],
         },
     },
@@ -142,70 +156,41 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 
+LOGIN_REDIRECT_URL = 'accounts:dashboard'
+LOGOUT_REDIRECT_URL = 'pages:home'
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+LOGIN_URL = 'account_login'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 500
+ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
+ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_USERNAME_BLACKLIST = ['admin', 'admin1', 'admin2', ]
+# DEFAULT_FROM_EMAIL = 'noreply@domain.com'
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
 
 
-
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "postgres",
-#         "USER": "postgres",
-#         "PASSWORD": "postgres",
-#         "HOST": "db",#Set in the docker-compose.yml
-#         "PORT": 5432,#Default postgres port
-#     }
-# }
-
-
-# LOGIN_REDIRECT_URL = 'user:dashboard'
-# LOGOUT_REDIRECT_URL = 'pages:home'
-# ACCOUNT_AUTHENTICATION_METHOD = "email"
-# LOGIN_URL = 'user:login_user'
-# ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
-# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
-# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 500
-# ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
-# # ACCOUNT_USERNAME_BLACKLIST = ['admin', 'admin1', 'admin2', ]
-# DEFAULT_FROM_EMAIL = 'noreply@oakpremier.com'
-# ACCOUNT_LOGOUT_ON_GET = True
-
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_UNIQUE_EMAIL = True
-# # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-# # ACCOUNT_USERNAME_REQUIRED = False
 
 # # ACCOUNT_FORMS = {'login': 'user.forms.MyCustomLoginForm'}
 # ACCOUNT_FORMS = {'signup': 'user.forms.MyCustomSignupForm'}
 
-##########################
-# LOGIN_REDIRECT_URL = 'dashboard:dashboard'
-# LOGOUT_REDIRECT_URL = 'home:home'
-# ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-# # LOGIN_URL = ''
-# ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 3
-# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 500
-# ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
-# ACCOUNT_USERNAME_BLACKLIST = ['admin','isaac','imafidon',]
-# DEFAULT_FROM_EMAIL = 'noreply@icrypttechnology.com'
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env("DATABASE_NAME"),
-        'USER': env("DATABASE_USER"),
-        'PASSWORD': env("DATABASE_PASSWORD"),
-        'HOST': env("DATABASE_HOST"),
-        'PORT': env("DATABASE_PORT"),
-    }
+    "default":env.dj_db_url("DATABASE_URL",
+    default="postgres://postgres@db/postgres")
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env("DATABASE_NAME"),
+#         'USER': env("DATABASE_USER"),
+#         'PASSWORD': env("DATABASE_PASSWORD"),
+#         'HOST': env("DATABASE_HOST"),
+#         'PORT': env("DATABASE_PORT"),
+#     }
+# }
 
 
 AUTH_USER_MODEL = "accounts.User"
@@ -264,8 +249,6 @@ if DEBUG:
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
 # Specifying to django where to look for the static files
 STATICFILES_DIRS = [
     (BASE_DIR / 'website/static')
@@ -283,6 +266,8 @@ MEDIA_ROOT = (BASE_DIR / 'media')
 # Url in which we can access our media files
 MEDIA_URL = '/media/'
 
+#Static file storage engine NB:Its already this by default we are just stating it
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 
 
@@ -309,13 +294,23 @@ MESSAGE_TAGS = {
 
 
 AUTHOR='Programmer Izak'
-SITE_NAME = 'Celebrity International School '
+SITE_NAME = 'School Name '
 SITE_TAGLINE="Website Development | Mobile Apps | Desktop | Custom Solutions | Digital Services | There's a Solution ... " 
-META_KEYWORDS='''website hosting,HTML,CSS,ASP,.NET,JavaScript,SQL,PHP,jQuery,XML,DOM,Bootstrap,Python,
-Java,Web development,W3C,tutorials,programming,training,learning,quiz,primer,lessons,references,examples,
-exercises,source code,colors,demos,tips,digital services,digital solutions,online solutions,support,
-icrypt, icrypt technology, digital help,remote services,best tech company in africa,top 5 tech company
-in africa,'''
-META_DESCRIPTION= '''Icrypt Technology is a Technology Company which focus on Rendering of digital services,
- like building of websites,mobile apps, desktop apps,remote help,virtual assistance,graphics designs,
- custom services,'''
+META_KEYWORDS='''comman,seperated, words, for, your, business, to, rank, for, '''
+META_DESCRIPTION= '''Brief explaination of what your business does ,'''
+
+
+# Use by django_debug toolbar
+import socket
+
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
+
+SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
+
+SECURE_HSTS_SECONDS = env.int("DJANGO_SECURE_HSTS_SECONDS", default=2592000)#20 days
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS",
+    default=True)
+SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
+SESSION_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE", default=True)
+CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)

@@ -1,0 +1,107 @@
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'head.html' %}
+<body>
+
+<div class="main-wrapper log-wrap">
+<div class="row">
+
+<div class="col-md-6 login-bg">
+<div class="owl-carousel login-slide owl-theme">
+<div class="welcome-login">
+<div class="login-banner">
+<img src="{% static 'assets/img/login-img.png' %}" class="img-fluid" alt="Logo">
+</div>
+<div class="mentor-course text-center">
+<h2>Welcome to <br>Celebrity International School.</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+</div>
+</div>
+<div class="welcome-login">
+<div class="login-banner">
+<img src="{% static 'assets/img/login-img.png' %}" class="img-fluid" alt="Logo">
+</div>
+<div class="mentor-course text-center">
+<h2>Welcome to <br>Celebrity International School.</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+</div>
+</div>
+<div class="welcome-login">
+<div class="login-banner">
+<img src="{% static 'assets/img/login-img.png' %}" class="img-fluid" alt="Logo">
+</div>
+<div class="mentor-course text-center">
+<h2>Welcome to <br>Celebrity International School.</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-6 login-wrap-bg">
+
+<div class="login-wrapper">
+<div class="loginbox">
+<div class="w-100">
+<div class="img-logo">
+<img src="{% static 'assets/img/logo.svg' %}" class="img-fluid" alt="Logo">
+<div class="back-home">
+<a href="{% url 'pages:home' %}">Back to Home</a>
+</div>
+</div>
+
+{% block form %}
+
+<h1>Sign into Your Account</h1>
+<form method="POST" action="{% url 'account_login' %}">
+    {% csrf_token %}
+
+
+
+                <div class="form-group">
+                {{form|crispy}}
+                </div>
+
+<div class="forgot">
+<span><a class="forgot-link" href="{% url 'account_reset_password' %}">Forgot Password ?</a></span>
+</div>
+
+
+<div class="d-grid">
+<button class="btn btn-primary btn-start" type="submit">Sign In</button>
+</div>
+</form>
+</div>
+</div>
+
+{% endblock form %}
+<div class="google-bg text-center">
+<span><a href="#">Or sign in with</a></span>
+<div class="sign-google">
+<ul>
+<li><a href="#"><img src="{% static 'assets/img/net-icon-01.png' %}" class="img-fluid" alt="Logo"> Sign In using Google</a></li>
+<li><a href="#"><img src="{% static 'assets/img/net-icon-02.png' %}" class="img-fluid" alt="Logo">Sign In using Facebook</a></li>
+</ul>
+</div>
+<p class="mb-0">New User ? <a href="{% url 'account_signup' %}">Create an Account</a></p>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+{% include 'script.html' %}
+</body>
+
+
+</html>

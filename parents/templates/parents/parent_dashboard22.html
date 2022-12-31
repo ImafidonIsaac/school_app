@@ -1,0 +1,116 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load thumbnail %}
+{% load cart_template_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="keywords" content="{{ meta_keywords }}">
+    <meta name="author" content="{{ author }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% if page_title %}{{ page_title }}-{% endif %}{{ site_name }}-{{tagline}}{% endblock %}</title>
+<style>
+    .asteriskField {
+    display: none;
+}
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+
+
+<body>
+
+{% include "parent/parent_header.html" %}
+
+{% include "parent/parent_sidebar.html" %}
+
+
+{% block content %}
+
+  <h2>Welcome 
+  {% if user.first_name %}
+      {{user.last_name}} {{user.first_name}}
+  {% else %}
+      {{user.username}}
+  {% endif %}
+  
+</h2>
+
+
+<h2>
+{% if parent_profile %}
+    <h1>Profile Completed</h1>
+    {% else %}
+        <h1>Please update your profile </h1>
+
+{% endif %}
+</h2>
+
+
+<h3>Due Fee : 89,000</h3>
+
+<h3>Notification : 7</h3>
+
+
+<h3>Result:  7</h3>
+
+<h3>Expense :7</h3>
+
+
+<h3>List of your kids </h3>
+<ol>
+  <li>Kid 1</li>
+  <li>Kid 2</li>
+  <li>Kid 3</li>
+</ol>
+
+
+Notification
+change Password
+
+
+
+<hr>
+
+<h3>All Expense</h3>
+
+ <table>
+  <tr>
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+</table> 
+
+
+<h3>kids Result</h3>
+
+<ol>
+  <li>One </li>
+  <li>Two</li>
+  <li>Three</li>
+</ol>
+
+{% endblock content %}
+
+{% include "parent/parent_footer.html" %}
+
+</body>
+</html>
+
